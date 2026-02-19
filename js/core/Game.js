@@ -1,5 +1,6 @@
 import { grid } from '../systems/Grid.js';
 import { Renderer } from '../systems/Renderer.js';
+import { InputHandler } from './Input.js';
 
 export class Game {
     constructor() {
@@ -15,6 +16,13 @@ export class Game {
         this.renderer = new Renderer(this.ctx);
 
         this.lastTime = 0;
+
+        this.input = new InputHandler(this);
+        this.enemies = [];
+        this.towers = [];
+
+        this.spawnTimer = 0;
+        this.spawnInterval = 1500;
     }
 
     start() {
@@ -32,11 +40,38 @@ export class Game {
     }
 
     update(dt) {
+        if(this.state.isGameOver) return;
 
+        this.state.updateUI();
+
+        this.spawnTimer += dt;
+
+        if(this.spawnTimer > this.spawnInterval){
+            this.enemies.push(new Enemy(this.grid.waypoints, this.cellSize));
+            this.spawnTimer =0;
+        }
+
+        for(let i=this.enemies.length-1;i>=0;i--){
+            const enemy = this.enemies[i];
+            enemy.update();
+
+            if(enemy.reachedEnd){
+                this.state.reducedHealth(1);
+                this.enemies.splice(i, 1);
+            }
+            if(enemy.isDead){
+                this.state.addGold(10);
+                this.enemies.splice(i,1);
+            }
+        }
     }
 
     draw() {
         this.renderer.clear();
-        this.grid.draw(this.ctx);
+        // this.grid.draw(this.ctx);
+
+        this.renderer.drawGrid(this.grid, this.input.mouse);
+
+        this.enemies.forEach(enemy => enemy.draw(this.ctx));
     }
 }
