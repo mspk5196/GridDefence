@@ -1,29 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initia-scale=1.0">
-    <title>Diner Dash meets Tower Defense</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Defence</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
-
 <body>
     <div id="game-container">
-        <div id="ui-overlay">
-            <div class="stats-bar">
-                <div class="stat-item">Grease: <span id="gold-count">100</span></div>
-                <div class="stat-item">Appetite: <span id="health-count">20</span></div>
-                <div class="stat-item">Wave: <span id="wave-count">1</span></div>
-            </div>
-            <div id="shop-panel">
-                <button class="tower-btn" data-type="mustard">Mustard Squirt (15g)</button>
-                <button class="tower-btn" data-type="chili">Chili Bomb (40g)</button>
+        <div id="menu-overlay" class="overlay">
+            <h1>FLAVORTOWN<br><span style="font-size: 0.5em;">DEFENSE</span></h1>
+            <button id="start-btn" class="big-btn">OPEN DINER (START)</button>
+            <div class="hotkey-hints">
+                <p>SPACE - Pause | R - Quick Restart | ESC - Menu</p>
+                <p>1/2/3 - Game Speed | Q/W - Tower Actions</p>
             </div>
         </div>
+
+        <div id="pause-overlay" class="overlay hidden">
+            <h1>PAUSED</h1>
+            <button id="resume-btn" class="big-btn">RESUME (SPACE)</button>
+            <button id="quick-restart-btn" class="big-btn">RESTART (R)</button>
+            <button id="settings-btn" class="big-btn">SETTINGS</button>
+            <button id="quit-btn" class="big-btn">QUIT TO MENU (ESC)</button>
+        </div>
+
+        <div id="gameover-overlay" class="overlay hidden">
+            <h2 style="color: var(--ketchup);">DINER CLOSED!</h2>
+            <p>The health inspector shut you down.</p>
+            <p>Waves Survived: <span id="final-wave">0</span></p>
+            <button id="restart-btn" class="big-btn">TRY AGAIN (R)</button>
+            <button id="exit-btn" class="big-btn">EXIT TO MENU (ESC)</button>
+        </div>
+
+        <div id="ui-layer" class="hidden">
+            <div class="stats-bar">
+                <div class="stat-item">💰 <span id="gold-count">150</span>g</div>
+                <div class="stat-item">❤️ <span id="health-count">20</span></div>
+                <div class="stat-item">🌊 WAVE <span id="wave-count">1</span></div>
+                <div class="speed-controls">
+                    <button id="speed-1x" class="speed-btn active">1x</button>
+                    <button id="speed-2x" class="speed-btn">2x</button>
+                    <button id="speed-3x" class="speed-btn">3x</button>
+                </div>
+                <button id="pause-btn" class="action-btn">⏸ PAUSE</button>
+            </div>
+
+            <div id="tower-panel" class="hidden">
+                <div class="panel-header">TOWER SPECS</div>
+                <p>Level: <span id="t-level">1</span></p>
+                <p>Range: <span id="t-range">160</span></p>
+                <p>Damage: <span id="t-damage">30</span></p>
+                <button id="upgrade-btn" class="tower-btn">⬆ UPGRADE (<span id="up-cost">75</span>g) [Q]</button>
+                <button id="sell-btn" class="tower-btn">💰 SELL (<span id="sell-val">25</span>g) [W]</button>
+                <button id="close-panel" class="tower-btn">❌ CLOSE [ESC]</button>
+            </div>
+
+            <div id="hotkey-display" class="hotkey-overlay">
+                <div class="hotkey-hint">SPACE: Pause/Resume</div>
+                <div class="hotkey-hint">R: Quick Restart</div>
+                <div class="hotkey-hint">ESC: Menu/Close</div>
+                <div class="hotkey-hint">1/2/3: Speed Control</div>
+                <div class="hotkey-hint">Q: Upgrade Tower</div>
+                <div class="hotkey-hint">W: Sell Tower</div>
+            </div>
+        </div>
+
         <canvas id="gameCanvas"></canvas>
     </div>
     <script type="module" src="js/main.js"></script>
 </body>
-
 </html>

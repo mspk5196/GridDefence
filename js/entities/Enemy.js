@@ -1,61 +1,39 @@
 export class Enemy {
-    constructor(waypoints, cellSize) {
-        this.wayponts = waypoints;
+    constructor(waypoints, cellSize, wave, type = 'burger') {
+        this.waypoints = waypoints;
         this.cellSize = cellSize;
+        this.x = waypoints[0].x * cellSize + cellSize / 2;
+        this.y = waypoints[0].y * cellSize + cellSize / 2;
+        this.targetIdx = 1;
 
-        this.x = waypoints[0].x * cellSize + cellSize /2;
-        this.y = waypoints[0].y * cellSize + cellSize /2;
+        const catalog = {
+            burger: { hp: 80, speed: 1.3, gold: 15, color: '#8b4513', r: 18 },
+            soda: { hp: 40, speed: 2.6, gold: 10, color: '#ff4500', r: 12 },
+            steak: { hp: 400, speed: 0.6, gold: 50, color: '#4a2c2a', r: 25 }
+        };
 
-        this.targetIndex = 1;
-        this.speed = 1.5;
-        this.heaalth = 100;
-        this.maxHealth = 100;
-        thiss.radius = 15;
-        this.isDead = false;
-        this.reachedEnd = false;
+        const config = catalog[type];
+        this.color = config.color;
+        this.radius = config.r;
+        this.speed = config.speed + (wave * 0.05);
+        this.maxHealth = config.hp * Math.pow(1.2, wave);
+        this.health = this.maxHealth;
+        this.goldValue = config.gold;
     }
 
     update() {
-        if(this.targetIndex >= this.waypoints.length){
-            this.reachedEnd = true;
-            return;
+        const target = this.waypoints[this.targetIdx];
+        const tx = target.x * this.cellSize + this.cellSize / 2;
+        const ty = target.y * this.cellSize + this.cellSize / 2;
+        const dx = tx - this.x, dy = ty - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        if (dist < this.speed) {
+            this.targetIdx++;
+            return this.targetIdx >= this.waypoints.length ? 'exit' : 'move';
         }
-
-        const target = this.waypoints[this.targetIndex];
-        const targetX = target.x * this.cellSize + this.cellSize/2;
-        const targetY = target.y * this.cellSize + this.cellSize/2;
-
-        const dx = targetX - this.x;
-        const dy = targetY - this.y;
-        const distance = Math.sqrt(dx*dx + dy*dy);
-
-        if(distance < this.speed){
-            this.x = targetX;
-            this.y = targetY;
-            this.targetIndex++;
-        }
-        else{
-            this.x += (dx/distance) * this.speed;
-            this.y += (dy/distance) * this.speed;
-        }
-    }
-    
-    draw(ctx) {
-        ctx.fillStyle = "rgba(0,0,0,0.3)";
-        ctx.beginpath();
-        ctx.arc(this.x, this.y+5, this.radius, 0, Math.PI*2);
-        ctx.fill();
-
-        ctx.fillStyle = "#8b4513";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
-        ctx.fill();
-
-        const barWidth=30;
-        const healthPercent = this.health/this.maxHealth;
-        ctx.fillStyle = "red";
-        ctx.fillRect(this.x - barWidth/2, this.y-25, barWidth, 4);
-        ctx.fillStyle = "lime";
-        ctx.fillRect(this.x - barWidth/2, this.y-25, barWidth*healthPercent, 4);
+        this.x += (dx / dist) * this.speed;
+        this.y += (dy / dist) * this.speed;
+        return 'move';
     }
 }

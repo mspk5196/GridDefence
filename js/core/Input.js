@@ -30,5 +30,31 @@ export class InputHandler {
                 console.warn("Can't cook there, boss! That's the road!");
             }
         }
+
+        const existingTower = this.game.towers.find(t => 
+        Math.floor(t.x / this.game.cellSize) === gridX && 
+        Math.floor(t.y / this.game.cellSize) === gridY
+    );
+
+    if (existingTower) {
+        this.game.selectedEntity = existingTower;
+        console.log("Tower Selected! Level:", existingTower.level);
+        return; 
+    }
+
+    // 2. Otherwise, try to place a NEW tower
+    if (grid.isPlacementValid(gridX, gridY)) {
+        const cost = 50; 
+        if (this.game.state.gold >= cost) {
+            this.game.state.addGold(-cost);
+            grid.tiles[gridY][gridX] = 2; // Mark as Tower
+            this.game.addTower(gridX, gridY);
+            this.game.selectedEntity = null;
+        } else {
+            console.log("Not enough grease in the pan!");
+        }
+    } else {
+        this.game.selectedEntity = null;
+    }
     }
 }

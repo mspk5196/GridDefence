@@ -1,62 +1,28 @@
-export class Grid{
+export class Grid {
     constructor(width, height, cellSize) {
-        this.width = width;
-        this.height = height;
         this.cellSize = cellSize;
-        this.rows = height/cellSize;
-        this.cols=width/cellSize;
-
-        this.tiles = [];
-
+        this.rows = height / cellSize;
+        this.cols = width / cellSize;
+        this.tiles = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
+        
+        // Complex Waypoints for better pathing
         this.waypoints = [
-            {x: -1, y: 2},
-            {x:4, y:2},
-            {x:4, y:5},
-            {x:9, y:5},
-            {x:9, y:1},
-            {x:12, y:1}
-        ]
-        this.init();
-    }
-    init() {
-        for(let y=0;y<this.rows; y++){
-            this.tiles[y] = [];
-            for(let x=0;x<this.cols; x++){
-                this.tiles[y][x] = 0;
-            }
-        }
+            {x: -1, y: 3}, {x: 3, y: 3}, {x: 3, y: 1}, 
+            {x: 8, y: 1}, {x: 8, y: 6}, {x: 13, y: 6}
+        ];
         this.burnPath();
     }
-
     burnPath() {
-        for(let i=0;i<this.waypoints.length-1;i++){
-            const start = this.waypoints[i];
-            const end = this.waypoints[i+1];
-
-            const startX = Math.max(0, Math.min(this.cols - 1, start.x));
-            const endX = Math.max(0, Math.min(this.cols -1, end.x));
-            const startY =  Math.max(0, Math.min(this.rows-1, start.y));
-            const endY = Math.max(0, Math.min(this.rows-1, end.y));
-
-            for(let y=Math.min(startY, endY); y<=Math.max(startY, endY); y++){
-                for(let x=Math.min(startX, endX); x<=Math.max(startX, endX); x++){
-                    this.tiles[y][x] = 1;
+        for (let i = 0; i < this.waypoints.length - 1; i++) {
+            let s = this.waypoints[i], e = this.waypoints[i+1];
+            for (let y = Math.min(s.y, e.y); y <= Math.max(s.y, e.y); y++) {
+                for (let x = Math.min(s.x, e.x); x <= Math.max(s.x, e.x); x++) {
+                    if (y >= 0 && y < this.rows && x >= 0 && x < this.cols) this.tiles[y][x] = 1;
                 }
             }
         }
     }
-
-    draw(ctx) {
-        ctx.strokeStyle = "rgba(255,255,255,0.05)";
-        for(let y=0;y<this.rows;y++){
-            for(let x=0;x<this.cols;x++){
-                ctx.strokeRect(x*this.cellSize, y*this.cellSize, this.cellSize, this.cellSize);
-
-                if(this.tiles[y][x] === 1){
-                    ctx.fillStyle = "#222";
-                    ctx.fillRect(x*this.cellSize, y*this.cellSize, this.cellSize, this.cellSize);
-                }
-            }
-        }
+    isPlacementValid(x, y) {
+        return x >= 0 && x < this.cols && y >= 0 && y < this.rows && this.tiles[y][x] === 0;
     }
 }
