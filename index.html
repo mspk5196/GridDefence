@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initia-scale=1.0">
+    <title>Diner Dash meets Tower Defense</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <div id="game-container">
+        <div id="ui-overlay">
+            <div class="stats-bar">
+                <div class="stat-item">Grease: <span id="gold-count">100</span></div>
+                <div class="stat-item">Appetite: <span id="health-count">20</span></div>
+                <div class="stat-item">Wave: <span id="wave-count">1</span></div>
+            </div>
+            <div id="shop-panel">
+                <button class="tower-btn" data-type="mustard">Mustard Squirt (15g)</button>
+                <button class="tower-btn" data-type="chili">Chili Bomb (40g)</button>
+            </div>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+    </div>
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
