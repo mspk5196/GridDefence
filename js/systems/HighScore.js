@@ -1,4 +1,4 @@
-export class HighScore{
+export class HighScore {
     constructor() {
         this.storageKey = 'flavortown_highscores';
         this.scores = this.load();
@@ -20,31 +20,33 @@ export class HighScore{
     }
 
     updateScores(stats) {
-        if(stats.wavesSurvived > this.scores.highestWave){
+        if (stats.wavesSurvived > this.scores.highestWave) {
             this.scores.highestWave = stats.wavesSurvived;
         }
-        if(stats.enemiesKilled > this.scores.mostKills) {
+        if (stats.enemiesKilled > this.scores.mostKills) {
             this.scores.mostKills = stats.enemiesKilled;
         }
         const playTime = this.getSecondsFromTime(stats.playTime);
-        if(playTime > this.scores.longestTime){
+        if (playTime > this.scores.longestTime) {
             this.scores.longestTime = playTime;
         }
         const accuracy = stats.accuracy;
-        if(accuracy > this.scores.mostAccurate) {
+        if (accuracy > this.scores.mostAccurate) {
             this.scores.mostAccurate = accuracy;
         }
+
         this.scores.recentGames.unshift({
             date: new Date().toLocaleDateString(),
             wave: stats.wavesSurvived,
             kills: stats.enemiesKilled,
             playTime: stats.playTime,
             accuracy: accuracy
-        })
+        });
 
-        if(this.scores.recentGames.length > 10){
-            this.scores.recentGames = this.scores.recentGames.slice(0,10);
+        if (this.scores.recentGames.length > 10) {
+            this.scores.recentGames = this.scores.recentGames.slice(0, 10);
         }
+
         this.save();
     }
 
@@ -55,7 +57,7 @@ export class HighScore{
 
     formatTime(seconds) {
         const mins = Math.floor(seconds / 60);
-        const secs = seconds %60;
+        const secs = seconds % 60;
         return `${mins}:${secs.toString().padStart(2, '0')}`;
     }
 
@@ -63,13 +65,13 @@ export class HighScore{
         return {
             ...this.scores,
             longestTimeFormatted: this.formatTime(this.scores.longestTime)
-        }
+        };
     }
 
-    clear(){
+    clear() {
         this.scores = {
             highestWave: 0,
-            mostKills:0,
+            mostKills: 0,
             longestTime: 0,
             mostAccurate: 0,
             recentGames: []

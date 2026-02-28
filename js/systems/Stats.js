@@ -5,7 +5,7 @@ export class Stats {
 
     reset() {
         this.enemiesKilled = 0;
-        this.towersBuilt =0;
+        this.towersBuilt = 0;
         this.totalMoneyEarned = 0;
         this.totalMoneySpent = 0;
         this.bulletsShot = 0;
@@ -18,15 +18,15 @@ export class Stats {
     }
 
     getAccuracy() {
-        return this.bulletsShot > 0 ? Math.round((this.bulletsHit/this.bulletsShot)*100) : 0;
+        return this.bulletsShot > 0 ? Math.round((this.bulletsHit / this.bulletsShot) * 100) : 0;
     }
 
     getPlayTime() {
         const end = this.gameEndTime || Date.now();
-        const seconds = Math.floor((end - this.gameStartTime)/1000);
-        const mins = Math.floor(seconds/60);
+        const seconds = Math.floor((end - this.gameStartTime) / 1000);
+        const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
-        return `${mins}:${secs.toString().padStart(2, '0')}`
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
     }
 
     toJSON() {

@@ -41,6 +41,7 @@ canvas {
     z-index: 10;
     text-align: center;
     color: var(--mustard);
+    overflow-y: auto;
 }
 
 .overlay h1 {
@@ -53,6 +54,13 @@ canvas {
 .overlay h2 {
     font-size: 2rem;
     margin: 20px 0;
+}
+
+.overlay h3 {
+    font-size: 1.5rem;
+    margin: 15px 0;
+    color: var(--mustard);
+    text-decoration: underline;
 }
 
 .overlay p {
@@ -234,4 +242,160 @@ canvas {
 .hotkey-hints p {
     margin: 5px 0;
     color: #888;
+}
+
+.stats-display {
+    background: rgba(255, 219, 88, 0.1);
+    border: 2px solid var(--mustard);
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 5px;
+    min-width: 400px;
+}
+
+.stat-line {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: #fff;
+    text-align: left;
+}
+
+.stat-line span {
+    color: var(--mustard);
+    font-weight: bold;
+    float: right;
+}
+
+.highscore-container {
+    display: flex;
+    gap: 40px;
+    margin: 20px 0;
+}
+
+.highscore-section {
+    background: rgba(255, 219, 88, 0.1);
+    border: 2px solid var(--mustard);
+    padding: 20px;
+    border-radius: 5px;
+    min-width: 300px;
+}
+
+.highscore-section p {
+    text-align: left;
+    margin: 10px 0;
+}
+
+.highscore-section span {
+    float: right;
+    color: var(--mustard);
+}
+
+#recent-games-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.recent-game-item {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    margin: 5px 0;
+    border-left: 3px solid var(--mustard);
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.settings-container {
+    display: flex;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.setting-group {
+    background: rgba(255, 219, 88, 0.1);
+    border: 2px solid var(--mustard);
+    padding: 20px;
+    border-radius: 5px;
+    min-width: 250px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    color: #fff;
+    cursor: pointer;
+}
+
+.setting-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.setting-item input[type="range"] {
+    width: 120px;
+    cursor: pointer;
+}
+
+.setting-item select {
+    padding: 5px 10px;
+    background: var(--chalk);
+    color: #fff;
+    border: 2px solid var(--mustard);
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+}
+
+#fps-counter {
+    position: absolute;
+    top: 70px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: var(--mustard);
+    padding: 5px 10px;
+    border: 2px solid var(--mustard);
+    font-size: 0.9rem;
+    z-index: 5;
+}
+
+.tooltip {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid var(--mustard);
+    padding: 10px;
+    border-radius: 5px;
+    pointer-events: none;
+    z-index: 100;
+    color: #fff;
+    font-size: 0.9rem;
+    max-width: 200px;
+}
+
+.tooltip-header {
+    color: var(--mustard);
+    font-weight: bold;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--mustard);
+    padding-bottom: 5px;
+}
+
+.tooltip-stat {
+    margin: 5px 0;
+    color: #fff;
+}
+
+.tooltip-desc {
+    color: #888;
+    font-style: italic;
+    margin: 5px 0;
+}
+
+.tooltip-footer {
+    color: #666;
+    font-size: 0.8rem;
+    margin-top: 8px;
+    border-top: 1px solid #333;
+    padding-top: 5px;
 }

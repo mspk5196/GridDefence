@@ -5,7 +5,7 @@ export class Renderer {
         this.towerRange = 160;
     }
 
-    draw(grid, enemies, towers, bullets, particles, mouse, selected, showRangePreview) {
+    draw(grid, enemies, towers, bullets, particles, mouse, selected, showRangePreview, showGridLines) {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         
         for (let y = 0; y < grid.rows; y++) {
@@ -14,8 +14,10 @@ export class Renderer {
                     this.ctx.fillStyle = "#151515";
                     this.ctx.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
                 }
-                this.ctx.strokeStyle = "rgba(255,255,255,0.03)";
-                this.ctx.strokeRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
+                if (showGridLines) {
+                    this.ctx.strokeStyle = "rgba(255,255,255,0.03)";
+                    this.ctx.strokeRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
+                }
             }
         }
 

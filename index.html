@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grid Defence</title>
+    <title>Flavortown Defense | Professional Edition</title>
     <link rel="stylesheet" href="css/main.css">
 </head>
-
 <body>
     <div id="game-container">
         <div id="menu-overlay" class="overlay">
-            <h1>GRID<br><span style="font-size: 0.5em;">DEFENSE</span></h1>
+            <h1>FLAVORTOWN<br><span style="font-size: 0.5em;">DEFENSE</span></h1>
             <button id="start-btn" class="big-btn">OPEN DINER (START)</button>
+            <button id="highscores-btn" class="big-btn">HIGH SCORES</button>
+            <button id="settings-menu-btn" class="big-btn">SETTINGS</button>
             <div class="hotkey-hints">
                 <p>SPACE - Pause | R - Quick Restart | ESC - Menu</p>
                 <p>1/2/3 - Game Speed | Q/W - Tower Actions</p>
@@ -30,9 +30,100 @@
         <div id="gameover-overlay" class="overlay hidden">
             <h2 style="color: var(--ketchup);">DINER CLOSED!</h2>
             <p>The health inspector shut you down.</p>
-            <p>Waves Survived: <span id="final-wave">0</span></p>
+            <div id="game-stats" class="stats-display">
+                <div class="stat-line">Waves Survived: <span id="stat-waves">0</span></div>
+                <div class="stat-line">Enemies Killed: <span id="stat-kills">0</span></div>
+                <div class="stat-line">Accuracy: <span id="stat-accuracy">0</span>%</div>
+                <div class="stat-line">Damage Dealt: <span id="stat-damage">0</span></div>
+                <div class="stat-line">Towers Built: <span id="stat-towers">0</span></div>
+                <div class="stat-line">Money Earned: <span id="stat-earned">0</span>g</div>
+                <div class="stat-line">Play Time: <span id="stat-time">0:00</span></div>
+            </div>
+            <div id="new-record" class="hidden" style="color: var(--mustard); font-size: 1.5rem; margin: 15px 0;">
+                🏆 NEW HIGH SCORE! 🏆
+            </div>
             <button id="restart-btn" class="big-btn">TRY AGAIN (R)</button>
             <button id="exit-btn" class="big-btn">EXIT TO MENU (ESC)</button>
+        </div>
+
+        <div id="highscores-overlay" class="overlay hidden">
+            <h1>HIGH SCORES</h1>
+            <div class="highscore-container">
+                <div class="highscore-section">
+                    <h3>BEST RECORDS</h3>
+                    <p>🏆 Highest Wave: <span id="hs-wave">0</span></p>
+                    <p>💀 Most Kills: <span id="hs-kills">0</span></p>
+                    <p>🎯 Best Accuracy: <span id="hs-accuracy">0</span>%</p>
+                    <p>⏱️ Longest Time: <span id="hs-time">0:00</span></p>
+                </div>
+                <div class="highscore-section">
+                    <h3>RECENT GAMES</h3>
+                    <div id="recent-games-list"></div>
+                </div>
+            </div>
+            <button id="clear-scores-btn" class="big-btn" style="background: var(--ketchup); color: #fff;">CLEAR SCORES</button>
+            <button id="close-highscores-btn" class="big-btn">BACK</button>
+        </div>
+
+        <div id="settings-overlay" class="overlay hidden">
+            <h1>SETTINGS</h1>
+            <div class="settings-container">
+                <div class="setting-group">
+                    <h3>AUDIO</h3>
+                    <label class="setting-item">
+                        <span>Sound Effects</span>
+                        <input type="checkbox" id="set-sound" checked>
+                    </label>
+                    <label class="setting-item">
+                        <span>Music</span>
+                        <input type="checkbox" id="set-music" checked>
+                    </label>
+                    <label class="setting-item">
+                        <span>Sound Volume</span>
+                        <input type="range" id="set-sound-vol" min="0" max="100" value="70">
+                    </label>
+                    <label class="setting-item">
+                        <span>Music Volume</span>
+                        <input type="range" id="set-music-vol" min="0" max="100" value="50">
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <h3>GRAPHICS</h3>
+                    <label class="setting-item">
+                        <span>Particle Effects</span>
+                        <input type="checkbox" id="set-particles" checked>
+                    </label>
+                    <label class="setting-item">
+                        <span>Show Range Preview</span>
+                        <input type="checkbox" id="set-range" checked>
+                    </label>
+                    <label class="setting-item">
+                        <span>Grid Lines</span>
+                        <input type="checkbox" id="set-grid" checked>
+                    </label>
+                    <label class="setting-item">
+                        <span>Show FPS Counter</span>
+                        <input type="checkbox" id="set-fps">
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <h3>GAMEPLAY</h3>
+                    <label class="setting-item">
+                        <span>Show Hotkeys</span>
+                        <input type="checkbox" id="set-hotkeys" checked>
+                    </label>
+                    <label class="setting-item">
+                        <span>Difficulty</span>
+                        <select id="set-difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </label>
+                </div>
+            </div>
+            <button id="reset-settings-btn" class="big-btn" style="background: var(--ketchup); color: #fff;">RESET DEFAULTS</button>
+            <button id="close-settings-btn" class="big-btn">BACK</button>
         </div>
 
         <div id="ui-layer" class="hidden">
@@ -40,6 +131,7 @@
                 <div class="stat-item">💰 <span id="gold-count">150</span>g</div>
                 <div class="stat-item">❤️ <span id="health-count">20</span></div>
                 <div class="stat-item">🌊 WAVE <span id="wave-count">1</span></div>
+                <div class="stat-item">💀 <span id="kill-count">0</span></div>
                 <div class="speed-controls">
                     <button id="speed-1x" class="speed-btn active">1x</button>
                     <button id="speed-2x" class="speed-btn">2x</button>
@@ -48,11 +140,15 @@
                 <button id="pause-btn" class="action-btn">⏸ PAUSE</button>
             </div>
 
+            <div id="fps-counter" class="hidden">FPS: <span id="fps-value">60</span></div>
+
             <div id="tower-panel" class="hidden">
                 <div class="panel-header">TOWER SPECS</div>
                 <p>Level: <span id="t-level">1</span></p>
                 <p>Range: <span id="t-range">160</span></p>
                 <p>Damage: <span id="t-damage">30</span></p>
+                <p>Fire Rate: <span id="t-firerate">1.0</span>/s</p>
+                <p>Total Kills: <span id="t-kills">0</span></p>
                 <button id="upgrade-btn" class="tower-btn">⬆ UPGRADE (<span id="up-cost">75</span>g) [Q]</button>
                 <button id="sell-btn" class="tower-btn">💰 SELL (<span id="sell-val">25</span>g) [W]</button>
                 <button id="close-panel" class="tower-btn">❌ CLOSE [ESC]</button>
@@ -72,5 +168,4 @@
     </div>
     <script type="module" src="js/main.js"></script>
 </body>
-
 </html>

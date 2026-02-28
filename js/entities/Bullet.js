@@ -1,37 +1,31 @@
 export class Bullet {
-    constructor(x, y, target, damage){
+    constructor(x, y, target, damage, tower) {
         this.x = x;
         this.y = y;
         this.target = target;
         this.damage = damage;
-        this. speed = 5;
-        this.radius = 4;
-        this.isDead = false;
+        this.tower = tower;
+        this.speed = 8;
+        this.dead = false;
     }
 
     update() {
+        if (!this.target || this.target.health <= 0) {
+            this.dead = true;
+            return;
+        }
         const dx = this.target.x - this.x;
         const dy = this.target.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy*dy);
-
-        if(distance < this.speed){
+        const dist = Math.hypot(dx, dy);
+        if (dist < 10) {
             this.target.health -= this.damage;
-            this.isDead = true;
+            if (this.target.health <= 0 && this.tower) {
+                this.tower.kills++;
+            }
+            this.dead = true;
+        } else {
+            this.x += (dx / dist) * this.speed;
+            this.y += (dy / dist) * this.speed;
         }
-        else{
-            this.x += (dx/distance)*this.speed;
-            this.y += (dy/distance)*this.speed;
-        }
-
-        if(this.target.health<=0){
-            this.isDead = true;
-        }
-    }
-
-    draw(ctx) {
-        ctx.fillStyle = "#ffdb58";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
-        ctx.fill();
     }
 }
